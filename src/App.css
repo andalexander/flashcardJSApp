@@ -203,7 +203,7 @@ body {
   margin: 1%;
 }
 
-/* Flashcard component */
+/* gameWindow styling */
 .gameWindow {
   display: flex;
   flex-direction: column;
@@ -217,12 +217,51 @@ body {
   min-height: 550px;
 }
 
+.introCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 2%;
+  background: #f7df1e;
+  font-family: "Open Sans", sans-serif;
+  color: #363537;
+  font-size: 1.2rem;
+  box-shadow: 2px 2px 40px #939194;
+  border-radius: 10px;
+  min-height: 550px;
+  width: 40%;
+  position: fixed;
+  z-index: 2;
+}
+
+.introSpan {
+  color: #939194;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.letsBegin {
+  color: #fdfffc;
+  background: #363537;
+  padding: 10px;
+  width: 50%;
+  border-radius: 5px;
+}
+
+.letsBegin:hover {
+  color: #363537;
+  background: #fdfffc;
+}
+
 .flashcard {
   background-color: transparent;
   width: 50%;
   height: 300px;
   perspective: 1000px;
   margin-bottom: 2%;
+  z-index: 1;
 }
 
 .flashcardInner {

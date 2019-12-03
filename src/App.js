@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import dbRef from "./firebase";
+import { dbRefDatabase } from "./firebase";
 import Flashcard from "./flashcards";
 import UserCard from "./UserCard";
 import "./App.css";
@@ -14,7 +15,9 @@ class App extends Component {
       currentAnswer: "",
       userQuestion: "",
       userAnswer: "",
-      showUserCard: false
+      showUserCard: false,
+      showIntroCard: true,
+      errorMessage: false
     };
   }
 
@@ -41,7 +44,20 @@ class App extends Component {
     });
   };
 
-  //Function for the on click event.
+  //Functions that allow UserCard component access to userQuestion & userAnswer
+  sendUserQuestionToFirebase = userQuestionInput => {
+    this.setState({
+      userQuestion: userQuestionInput
+    });
+  };
+
+  sendUserAnswerToFirebase = userAnswerInput => {
+    this.setState({
+      userAnswer: userAnswerInput
+    });
+  };
+
+  //Function to generate random "Card" from Firebase database.
   handleClick = e => {
     e.preventDefault();
     this.getRandomCard();
@@ -63,31 +79,32 @@ class App extends Component {
     });
   };
 
-  pushUserInput = () => {
-    console.log("cli;ck");
-    return (
-      <UserCard
-        flashcardLength={this.state.flashcard.length}
-        userQuestion={this.state.userQuestion}
-        userAnswer={this.state.userAnswer}
-      />
-    );
+  //Function to push users input values to Firebase
+  pushUsersInput = e => {
+    e.preventDefault();
+    if (this.state.userQuesiton == "" || this.state.userAnswer == "") {
+      this.setState({
+        errorMessage: true
+      });
+    } else {
+      dbRefDatabase.ref(`card${this.state.flashcard.length + 1}`).update({
+        question: this.state.userQuestion,
+        answer: this.state.userAnswer
+      });
+      this.setState({
+        userQuestion: "",
+        userAnswer: ""
+      });
+    }
   };
 
-  //Taking the input from the user and saving it to userQuestion & userAnswer state.
-  handleQuestionChange = event => {
-    this.setState({ userQuestion: event.target.value });
-    console.log(this.state.userQuestion);
+  //Function to hide Intro message.
+  hideIntroCardComponent = e => {
+    e.preventDefault();
+    this.setState({
+      showIntroCard: false
+    });
   };
-
-  handleAnswerChange = event => {
-    this.setState({ userAnswer: event.target.value });
-  };
-
-  // Potential split string function:
-  // handleSplit = stringToSplit => {
-  //   return stringToSplit.split("**");
-  // };
 
   //Render cycle. This is where I am calling my flashcards from Firebase and mapping them to the card on the page.
   render() {
@@ -96,6 +113,27 @@ class App extends Component {
         <main>
           <h1 className="title">flashCards.js</h1>
           <div className="gameWindow">
+            {this.state.showIntroCard ? (
+              <div className="introCard">
+                <h1>Welcome to flashCards.js!</h1>
+                <p>
+                  flashCards.js is a JavaScript flashcard game designed to help
+                  you learn and remember JavaScript concepts.
+                </p>
+                <p>
+                  Click <span className="introSpan">"Next Card"</span> to
+                  randomly generate a JS flashcard or click
+                  <span className="introSpan"> "Create your own" </span> to add
+                  a custom flaschard to the database!
+                </p>
+                <button
+                  className="letsBegin"
+                  onClick={this.hideIntroCardComponent}
+                >
+                  Let's begin!
+                </button>
+              </div>
+            ) : null}
             <div className="flashcard">
               <div className="flashcardInner">
                 <div className="frontCard">{this.state.currentQuestion}</div>
@@ -105,53 +143,29 @@ class App extends Component {
             </div>
             {/* End of flashcard */}
             <div className="userButtons">
-              <button onClick={this.handleClick}>Start</button>
+              <button onClick={this.handleClick}>Next card</button>
               <button onClick={this.addUserCardComponent}>
                 Create your own
               </button>
             </div>
-            {/* USER INPUTS */}
             <div className="userCustomCard">
-              {this.state.showUserCard && (
-                <div className="inputFlex">
-                  <div className="userInputs">
-                    <p>Enter your custom card question:</p>
-                    <label
-                      htmlFor="userQuestionInput"
-                      className="visuallyHidden"
-                    >
-                      Enter your custom flashcard question.
-                    </label>
-                    <input
-                      type="text"
-                      id="userQuestionInput"
-                      className="userInput"
-                      placeholder="Enter a question"
-                      onChange={this.handleQuestionChange}
-                    />
-                  </div>
-                  <div className="userInputs">
-                    <p>Enter your custom card answer:</p>
-                    <label htmlFor="userAnswerInput" className="visuallyHidden">
-                      Enter your custom flashcard answer.
-                    </label>
-                    <input
-                      type="text"
-                      id="userAnswerInput"
-                      className="userInput"
-                      placeholder="Enter the answer"
-                      onChange={this.handleAnswerChange}
-                    />
-                  </div>
-                </div>
-              )}
+              {this.state.showUserCard ? (
+                <UserCard
+                  flashcardLength={this.state.flashcard.length}
+                  sendUserQuestionToFirebaseProp={
+                    this.sendUserQuestionToFirebase
+                  }
+                  sendUserAnswerToFirebaseProp={this.sendUserAnswerToFirebase}
+                  pushUsersInputProp={this.pushUsersInput}
+                  ifUserHasError={this.ifUserHasError}
+                />
+              ) : null}
             </div>
-
-            <div className="submissionButton">
-              <button onClick={this.pushUserInput} className="usersButton">
-                Submit Card
-              </button>
-            </div>
+            {this.state.errorMessage ? (
+              <span className="errorMessage">
+                Please ensure both question and answer are filled
+              </span>
+            ) : null}
           </div>
           {/* End of gameWindow */}
         </main>
@@ -161,34 +175,3 @@ class App extends Component {
 } //end of class APP
 
 export default App;
-
-//Create line break where "**" appears in keys.
-// handleSplit = stringToSplit => {
-//   return stringToSplit.split("**");
-// };
-
-// Nicks thing:
-
-//Render "question" key to frontCard:
-
-//Render "question" key to backCard:
-// renderBackCard = () => {
-//   if (this.state.flashcard[this.state.counter]) {
-//     const answerString = this.state.flashcard[this.state.counter][1];
-//     return this.handleSplit(answerString);
-//   }
-// };
-
-//Create line break where "**" appears in keys.
-// handleSplit = stringToSplit => {
-//   return stringToSplit.split("**").map(codePiece => {
-//     return <div>{codePiece}</div>;
-//   });
-// };
-
-{
-  /* <div className="frontCard">{this.renderFrontCard()}</div>
-                  <div className="backCard">{this.renderBackCard()}</div> */
-}
-
-//Append
