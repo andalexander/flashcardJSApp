@@ -7,6 +7,9 @@ black: #272429;
 
 /* My styling: */
 
+/* Font load-in */
+@import url("https://fonts.googleapis.com/css?family=Cabin:400,600|Open+Sans:400,700&display=swap");
+
 /*****************************************RESET*******************************************/
 article,
 aside,
@@ -156,16 +159,29 @@ input::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
+
+.visuallyHidden:not(:focus):not(:active) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(00 0 0);
+  overflow: hidden;
+}
 /***************************************END RESET******************************************/
+
+/* 1
+font-family: "Open Sans", sans-serif;
+font-family: "Cabin", sans-serif;
+1 */
 
 /* Body styling */
 body {
-  background: #f7df1e;
-}
-
-main {
-  height: 100vh;
-  overflow: hidden;
+  background: #6cd4ff;
 }
 
 .wrapper {
@@ -174,24 +190,39 @@ main {
   margin: 0 auto;
 }
 
+.flexParent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  font-family: "Cabin", sans-serif;
+  font-size: 4rem;
+  color: #363537;
+  margin: 1%;
+}
+
 /* Flashcard component */
 .gameWindow {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin: 0 auto;
-  background: #ffffff;
-  height: 80%;
-  box-shadow: 10px 10px 10px #000000;
+  padding: 2%;
+  background: #fdfffc;
+  box-shadow: 2px 2px 40px #939194;
   border-radius: 10px;
+  min-height: 550px;
 }
 
 .flashcard {
-  margin: 0 auto;
   background-color: transparent;
-  width: 40%;
-  height: 200px;
+  width: 50%;
+  height: 300px;
   perspective: 1000px;
+  margin-bottom: 2%;
 }
 
 .flashcardInner {
@@ -209,35 +240,85 @@ main {
 
 .frontCard,
 .backCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: calc(100% - 100px);
+  height: calc(100% - 100px);
+  padding: 50px;
   backface-visibility: hidden;
-  box-shadow: 0.5px 0.5px 20px rgb(223, 223, 223);
+  box-shadow: 0.5px 0.5px 20px #d8d5db;
   border-radius: 20px;
+  font-family: "Open Sans", sans-serif;
+  color: #363537;
+  font-size: 1.5rem;
+  text-align: center;
 }
 
 .frontCard {
   background: #ffffff;
-  color: #000000;
 }
 
 .backCard {
   background: #ffffff;
-  color: #000000;
   transform: rotateY(180deg);
 }
 
 /* Buttons */
 .userButtons {
+  display: flex;
+  justify-content: center;
   text-align: center;
-  border: 1px solid red;
+  width: 100%;
 }
 
 button {
-  width: 20%;
+  margin: 2% 5%;
+  background: none;
+  border-style: none;
+  text-transform: uppercase;
+  font-family: "Cabin", sans-serif;
+  color: #f7df1e;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
+/* UserCard.js styling */
+.userCustomCard {
+  width: 100%;
+}
+
+.inputFlex {
+  width: 50%;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+}
+
+.userInputs {
+  margin: 2%;
+}
+
+.userInputs input {
+  border: none;
+  background: #d8d5db;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.submissionButton {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.usersButton {
+  color: #fdfffc;
+  background: #363537;
+  padding: 10px;
+  width: 20%;
+  border-radius: 5px;
+}
 /* React styling */
 .App {
   text-align: center;
