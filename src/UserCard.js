@@ -3,9 +3,7 @@ import React, { Component } from "react";
 import { dbRef } from "./firebase";
 
 class UserCard extends Component {
-  //Function to push users inputted Question & Answer to the Firebase
-
-  // Taking the input from the user and saving it to userQuestion & userAnswer state.
+  // Taking the input from the user and saving it to userQuestion & userAnswer state via the prop.
   handleQuestionChange = event => {
     const userInputQuestion = event.target.value;
     this.props.sendUserQuestionToFirebaseProp(userInputQuestion);
@@ -32,6 +30,8 @@ class UserCard extends Component {
               className="userInput"
               placeholder="Enter a question"
               onChange={this.handleQuestionChange}
+              value={this.props.currentUserQ}
+              maxLength="100"
             />
           </div>
           <div className="userInputs">
@@ -45,13 +45,15 @@ class UserCard extends Component {
               className="userInput"
               placeholder="Enter the answer"
               onChange={this.handleAnswerChange}
+              value={this.props.currentUserA}
+              maxLength="100"
             />
           </div>
         </div>
         <div className="submissionButton">
           <button
             onClick={this.props.pushUsersInputProp}
-            className="usersButton"
+            className="userSubmission"
           >
             Submit Card
           </button>

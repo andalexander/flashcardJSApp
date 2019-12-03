@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import dbRef from "./firebase";
 import { dbRefDatabase } from "./firebase";
-import Flashcard from "./flashcards";
 import UserCard from "./UserCard";
 import "./App.css";
 
@@ -21,7 +20,7 @@ class App extends Component {
     };
   }
 
-  //Pulling data from Firebase database
+  //Pulling data from Firebase database and setting it to flashcard state.
   componentDidMount() {
     dbRef.on("value", response => {
       const flashcardArrayCopy = [];
@@ -44,7 +43,7 @@ class App extends Component {
     });
   };
 
-  //Functions that allow UserCard component access to userQuestion & userAnswer
+  //Functions that allow UserCard component access to userQuestion & userAnswer states. These are being passed down as props to the <UserCard /> component.
   sendUserQuestionToFirebase = userQuestionInput => {
     this.setState({
       userQuestion: userQuestionInput
@@ -64,7 +63,6 @@ class App extends Component {
     const randomCardNumber = this.state.counter;
     const question = this.state.flashcard[randomCardNumber].question;
     const answer = this.state.flashcard[randomCardNumber].answer;
-    // const splitAnswer = this.handleSplit(answer);
     this.setState({
       currentQuestion: question,
       currentAnswer: answer
@@ -79,7 +77,7 @@ class App extends Component {
     });
   };
 
-  //Function to push users input values to Firebase
+  //Function to push users custom card input values to Firebase.
   pushUsersInput = e => {
     e.preventDefault();
     if (this.state.userQuesiton == "" || this.state.userAnswer == "") {
@@ -98,7 +96,7 @@ class App extends Component {
     }
   };
 
-  //Function to hide Intro message.
+  //Function to hide to set Intro message to false to hide for user.
   hideIntroCardComponent = e => {
     e.preventDefault();
     this.setState({
@@ -106,7 +104,7 @@ class App extends Component {
     });
   };
 
-  //Render cycle. This is where I am calling my flashcards from Firebase and mapping them to the card on the page.
+  //Render cycle.
   render() {
     return (
       <div className="flexParent wrapper">
@@ -134,7 +132,7 @@ class App extends Component {
                 </button>
               </div>
             ) : null}
-            <div className="flashcard">
+            <div className="flashcard" tabIndex="0">
               <div className="flashcardInner">
                 <div className="frontCard">{this.state.currentQuestion}</div>
                 <div className="backCard">{this.state.currentAnswer}</div>
@@ -143,8 +141,13 @@ class App extends Component {
             </div>
             {/* End of flashcard */}
             <div className="userButtons">
-              <button onClick={this.handleClick}>Next card</button>
-              <button onClick={this.addUserCardComponent}>
+              <button className="usersButtons" onClick={this.handleClick}>
+                Next card
+              </button>
+              <button
+                className="usersButtons"
+                onClick={this.addUserCardComponent}
+              >
                 Create your own
               </button>
             </div>
@@ -158,12 +161,14 @@ class App extends Component {
                   sendUserAnswerToFirebaseProp={this.sendUserAnswerToFirebase}
                   pushUsersInputProp={this.pushUsersInput}
                   ifUserHasError={this.ifUserHasError}
+                  currentUserQ={this.state.userQuestion}
+                  currentUserA={this.state.userAnswer}
                 />
               ) : null}
             </div>
             {this.state.errorMessage ? (
               <span className="errorMessage">
-                Please ensure both question and answer are filled
+                Please ensure both question and answer are filled!
               </span>
             ) : null}
           </div>

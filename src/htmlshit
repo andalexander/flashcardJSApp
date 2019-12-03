@@ -1,0 +1,28 @@
+ <h1>JS Flashcards</h1>
+        {this.state.flashcard === undefined ? (
+          <div>loading</div>
+        ) : (
+          <main>
+            <div className="gameWindow wrapper">
+              <div className="flashcard">
+                <div className="flashcardInner">
+                  <div className="frontCard">
+                   {this.state.flashcard.map(card => {
+          const { question, answer } = card;
+          return (
+            <div>
+              <p>{question}</p>
+              <p>{answer}</p>
+            </div>
+          );
+        })}
+                  </div>
+                  <div className="backCard"></div>
+                </div>
+                {/* End of flashcardInner */}
+              </div>
+              {/* End of flashcard */}
+            </div>
+            {/* End of gameWindow */}
+          </main>
+        )}

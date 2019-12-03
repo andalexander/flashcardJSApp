@@ -152,6 +152,11 @@ table {
 body,
 figure {
   margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 legend,
 button::-moz-focus-inner,
@@ -203,13 +208,21 @@ body {
   margin: 1%;
 }
 
+button:focus {
+  outline: 3px solid #ca054d;
+}
+
+input:focus {
+  outline: 3px solid #f7df1e;
+}
+
 /* gameWindow styling */
 .gameWindow {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  margin: 0 auto 5% auto;
   padding: 2%;
   background: #fdfffc;
   box-shadow: 2px 2px 40px #939194;
@@ -231,9 +244,15 @@ body {
   box-shadow: 2px 2px 40px #939194;
   border-radius: 10px;
   min-height: 550px;
-  width: 40%;
+  width: 60%;
   position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 2;
+}
+
+.introCard h1 {
+  text-align: center;
 }
 
 .introSpan {
@@ -277,6 +296,11 @@ body {
   transform: rotateY(180deg);
 }
 
+.flashcard:focus .flashcardInner {
+  transform: rotateY(180deg);
+  outline: 3px solid #ca054d;
+}
+
 .frontCard,
 .backCard {
   display: flex;
@@ -308,8 +332,15 @@ body {
 .userButtons {
   display: flex;
   justify-content: center;
-  text-align: center;
   width: 100%;
+}
+
+.usersButtons {
+  text-align: center;
+}
+
+.usersButtons:hover {
+  color: #363537;
 }
 
 button {
@@ -331,12 +362,16 @@ button {
 .inputFlex {
   width: 50%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   margin: 0 auto;
 }
 
 .userInputs {
   margin: 2%;
+}
+
+.userInputs p {
+  font-family: "Cabin", sans-serif;
 }
 
 .userInputs input {
@@ -351,12 +386,24 @@ button {
   margin: 0 auto;
 }
 
-.usersButton {
+.userSubmission:hover {
+  color: #363537;
+  background: #f7df1e;
+}
+
+.userSubmission {
   color: #fdfffc;
   background: #363537;
   padding: 10px;
   width: 20%;
   border-radius: 5px;
+}
+
+.errorMessage {
+  font-family: "Cabin", sans-serif;
+  color: #ca054d;
+  font-style: italic;
+  font-weight: 700;
 }
 /* React styling */
 .App {
@@ -380,4 +427,80 @@ button {
 
 .App-link {
   color: #09d3ac;
+}
+
+/* Media Queries */
+/* 1024px */
+@media (max-width: 1024px) {
+  .flashcard {
+    width: 70%;
+  }
+
+  .inputFlex {
+    width: 100%;
+  }
+
+  .usersSubmission {
+    text-align: center;
+  }
+
+  .introCard {
+    width: 80%;
+  }
+}
+/* End of 1024px query */
+
+/* 800px */
+@media (max-width: 800px) {
+  .userButtons {
+    margin-top: 3%;
+  }
+
+  .userSubmission {
+    width: 60%;
+  }
+
+  .introCard {
+    top: 50%;
+  }
+}
+/* end of 800px query */
+
+/* 736px */
+@media (max-width: 736px) {
+  .frontCard,
+  .backCard {
+    font-size: 1.2rem;
+  }
+
+  .usersButtons {
+    margin-top: 10%;
+    font-size: 1.3rem;
+  }
+
+  .inputFlex {
+    flex-direction: column;
+  }
+
+  .userInputs input {
+    width: 80%;
+  }
+
+  .introCard {
+    margin-top: 10%;
+    font-size: 1rem;
+  }
+}
+/* end of 736 query */
+
+/* 414px */
+@media (max-width: 414px) {
+  .flexParent {
+    height: 100vh;
+  }
+
+  .introCard {
+    top: 50%;
+    padding: 10%;
+  }
 }
