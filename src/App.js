@@ -31,7 +31,6 @@ class App extends Component {
       this.setState({
         flashcard: flashcardArrayCopy
       });
-      console.log(this.state.flashcard);
     });
   }
 
