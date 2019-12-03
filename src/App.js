@@ -63,6 +63,27 @@ class App extends Component {
     });
   };
 
+  pushUserInput = () => {
+    console.log("cli;ck");
+    return (
+      <UserCard
+        flashcardLength={this.state.flashcard.length}
+        userQuestion={this.state.userQuestion}
+        userAnswer={this.state.userAnswer}
+      />
+    );
+  };
+
+  //Taking the input from the user and saving it to userQuestion & userAnswer state.
+  handleQuestionChange = event => {
+    this.setState({ userQuestion: event.target.value });
+    console.log(this.state.userQuestion);
+  };
+
+  handleAnswerChange = event => {
+    this.setState({ userAnswer: event.target.value });
+  };
+
   // Potential split string function:
   // handleSplit = stringToSplit => {
   //   return stringToSplit.split("**");
@@ -89,14 +110,47 @@ class App extends Component {
                 Create your own
               </button>
             </div>
+            {/* USER INPUTS */}
             <div className="userCustomCard">
               {this.state.showUserCard && (
-                <UserCard
-                  flashcardLength={this.state.flashcard.length}
-                  usersQuestion={this.state.usersQuestion}
-                  usersAnswer={this.state.usersQuestion}
-                />
+                <div className="inputFlex">
+                  <div className="userInputs">
+                    <p>Enter your custom card question:</p>
+                    <label
+                      htmlFor="userQuestionInput"
+                      className="visuallyHidden"
+                    >
+                      Enter your custom flashcard question.
+                    </label>
+                    <input
+                      type="text"
+                      id="userQuestionInput"
+                      className="userInput"
+                      placeholder="Enter a question"
+                      onChange={this.handleQuestionChange}
+                    />
+                  </div>
+                  <div className="userInputs">
+                    <p>Enter your custom card answer:</p>
+                    <label htmlFor="userAnswerInput" className="visuallyHidden">
+                      Enter your custom flashcard answer.
+                    </label>
+                    <input
+                      type="text"
+                      id="userAnswerInput"
+                      className="userInput"
+                      placeholder="Enter the answer"
+                      onChange={this.handleAnswerChange}
+                    />
+                  </div>
+                </div>
               )}
+            </div>
+
+            <div className="submissionButton">
+              <button onClick={this.pushUserInput} className="usersButton">
+                Submit Card
+              </button>
             </div>
           </div>
           {/* End of gameWindow */}
