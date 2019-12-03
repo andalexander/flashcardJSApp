@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import dbRef from "./firebase";
 import Flashcard from "./flashcards";
+import UserCard from "./UserCard";
 import "./App.css";
 
 class App extends Component {
@@ -10,7 +11,10 @@ class App extends Component {
       flashcard: [],
       counter: 0,
       currentQuestion: "",
-      currentAnswer: ""
+      currentAnswer: "",
+      userQuestion: "",
+      userAnswer: "",
+      showUserCard: false
     };
   }
 
@@ -44,23 +48,32 @@ class App extends Component {
     const randomCardNumber = this.state.counter;
     const question = this.state.flashcard[randomCardNumber].question;
     const answer = this.state.flashcard[randomCardNumber].answer;
-    const splitAnswer = this.handleSplit(answer);
+    // const splitAnswer = this.handleSplit(answer);
     this.setState({
       currentQuestion: question,
       currentAnswer: answer
     });
   };
 
-  handleSplit = stringToSplit => {
-    return stringToSplit.split("**");
+  //Function to change showUserCard to true so it appears in the "userCustomCard" div when the "this.addUserCardComponent" onClick fires.
+  addUserCardComponent = e => {
+    e.preventDefault();
+    this.setState({
+      showUserCard: true
+    });
   };
+
+  // Potential split string function:
+  // handleSplit = stringToSplit => {
+  //   return stringToSplit.split("**");
+  // };
 
   //Render cycle. This is where I am calling my flashcards from Firebase and mapping them to the card on the page.
   render() {
     return (
-      <div className="wrapper">
+      <div className="flexParent wrapper">
         <main>
-          <h1>JS Flashcards</h1>
+          <h1 className="title">flashCards.js</h1>
           <div className="gameWindow">
             <div className="flashcard">
               <div className="flashcardInner">
@@ -72,7 +85,18 @@ class App extends Component {
             {/* End of flashcard */}
             <div className="userButtons">
               <button onClick={this.handleClick}>Start</button>
-              <button onClick={this.handleClick}>Create your own</button>
+              <button onClick={this.addUserCardComponent}>
+                Create your own
+              </button>
+            </div>
+            <div className="userCustomCard">
+              {this.state.showUserCard && (
+                <UserCard
+                  flashcardLength={this.state.flashcard.length}
+                  usersQuestion={this.state.usersQuestion}
+                  usersAnswer={this.state.usersQuestion}
+                />
+              )}
             </div>
           </div>
           {/* End of gameWindow */}

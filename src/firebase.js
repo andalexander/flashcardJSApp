@@ -18,4 +18,6 @@ firebase.initializeApp(config);
 
 const dbRef = firebase.database().ref();
 
+export const dbRefDatabase = firebase.database();
+
 export default dbRef;
